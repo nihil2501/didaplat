@@ -1,4 +1,4 @@
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import { getServerSession as getNextAuthServerSession } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { env } from "@/env.mjs";
