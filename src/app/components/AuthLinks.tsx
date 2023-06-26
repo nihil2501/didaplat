@@ -19,7 +19,7 @@ export function LogoutLink(props: AuthLinkProps) {
   return (
     <Button
       variant="link"
-      onClick={() => signOut({ callbackUrl: "/explore" })}
+      onClick={() => signOut()}
       {...props}
     />
   );
