@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogIn, LogOut } from "lucide-react";
 import { getServerSession } from "@/lib/auth";
-import { LogoutLink, LoginLink } from "./AuthLinks";
+import { LogoutButton, LoginButton } from "./AuthButtons";
 
 function getInitials(name: string) {
   return name
@@ -25,10 +25,10 @@ export default async function UserNav() {
 
   if (!session) {
     return (
-      <LoginLink className="h-full p-0">
+      <LoginButton variant="link" className="h-full p-0">
         <LogIn className="mr-2 h-4 w-4" />
         <span>Log in</span>
-      </LoginLink>
+      </LoginButton>
     );
   }
 
@@ -58,10 +58,10 @@ export default async function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogoutLink className="h-full p-0">
+          <LogoutButton variant="link" className="h-full p-0">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
-          </LogoutLink>
+          </LogoutButton>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
