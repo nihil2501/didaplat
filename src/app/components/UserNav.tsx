@@ -15,8 +15,7 @@ import { LogoutLink, LoginLink } from "./AuthLinks";
 
 function getInitials(name: string) {
   return name
-    .trim()
-    .split(/\s+/)
+    .trim().split(/\s+/)
     .map(word => word[0].toUpperCase())
     .join('');
 };
@@ -26,7 +25,7 @@ export default async function UserNav() {
 
   if (!session) {
     return (
-      <LoginLink>
+      <LoginLink className="h-full p-0">
         <LogIn className="mr-2 h-4 w-4" />
         <span>Log in</span>
       </LoginLink>
@@ -59,7 +58,7 @@ export default async function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogoutLink>
+          <LogoutLink className="h-full p-0">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </LogoutLink>
