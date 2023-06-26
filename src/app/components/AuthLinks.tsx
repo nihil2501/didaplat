@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, signOut } from "next-auth/react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface LoginLinkProps {
   children: React.ReactNode;

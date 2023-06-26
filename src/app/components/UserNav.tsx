@@ -21,7 +21,7 @@ function getInitials(name: string) {
     .join('');
 };
 
-export async function UserNav() {
+export default async function UserNav() {
   const session = await getServerSession();
 
   if (!session) {
