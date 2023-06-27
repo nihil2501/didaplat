@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <div className="hidden flex-col md:flex">
             <div className="border-b">
               <div className="flex h-16 items-center px-4">
-                <h2 className="text-3xl font-bold tracking-tight">Didaplat</h2>
+                <h2 className="text-2xl font-bold tracking-tight">Didaplat</h2>
                 <MainNav className="mx-6" />
                 <div className="ml-auto flex items-center space-x-4">
                   <UserNav />

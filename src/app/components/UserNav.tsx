@@ -66,12 +66,9 @@ export default async function UserNav() {
   );
 };
 
-type UserProperties =
-  "name" | "email" | "image";
-
 function getUserProperty(
   session: Session | null,
-  property: UserProperties
+  property: keyof NonNullable<Session["user"]>
 ) {
   const user = session?.user;
   if (!user) return "";

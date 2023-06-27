@@ -1,24 +1,27 @@
-import { getServerSession } from "@/lib/auth";
 import { cn } from "@/lib/utils";
-import MainNavLink from "./MainNavLink";
+import Link from "next/link";
 
-type MainNavProps =
-  React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+interface MainNavProps {
+  className: string;
+}
 
-export default async function MainNav({
-  className,
-  ...props
-}: MainNavProps) {
-  const session = await getServerSession();
-
+export default async function MainNav({ className }: MainNavProps) {
   return (
-    <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
-      <MainNavLink href="/explore" label="Explore" />
-      <MainNavLink href="/create" label="Create" />
-      {session && <MainNavLink href="/progress/series" label="Progress" />}
+    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
+      <MainNavLink href="/explore">Explore</MainNavLink>
+      <MainNavLink href="/create">Create</MainNavLink>
+      <MainNavLink href="/progress">Progress</MainNavLink>
     </nav>
   );
 };
+
+interface MainNavLinkProps {
+  children: React.ReactNode;
+  href: string;
+};
+
+function MainNavLink(props: MainNavLinkProps) {
+  return (
+    <Link {...props} className="text-sm font-medium transition-colors hover:text-primary" />
+  );
+}
