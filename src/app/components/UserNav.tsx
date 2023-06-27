@@ -19,9 +19,11 @@ export default async function UserNav() {
 
   if (!session) {
     return (
-      <LoginButton variant="link" className="h-full p-0">
-        <LogIn className="mr-2 h-4 w-4" />
-        <span>Log in</span>
+      <LoginButton>
+        <Button variant="ghost">
+          <LogIn className="mr-2 h-4 w-4" />
+          Log in
+        </Button>
       </LoginButton>
     );
   }
@@ -51,12 +53,14 @@ export default async function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogoutButton variant="link" className="h-full p-0">
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </LogoutButton>
-        </DropdownMenuItem>
+        <LogoutButton>
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <div>
+              <LogOut className="w-4 h-4 mr-2" />
+              Log out
+            </div>
+          </DropdownMenuItem>
+        </LogoutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );
