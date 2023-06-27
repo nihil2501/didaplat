@@ -18,7 +18,7 @@ export default async function MainNav({
     >
       <MainNavLink href="/explore" label="Explore" />
       <MainNavLink href="/create" label="Create" />
-      {session && <MainNavLink href="/progress" label="Progress" />}
+      {session && <MainNavLink href="/progress/series" label="Progress" />}
     </nav>
   );
 };

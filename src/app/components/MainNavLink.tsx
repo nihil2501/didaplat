@@ -10,16 +10,23 @@ interface MainNavLinkProps {
 };
 
 export default function MainNavLink({ label, href }: MainNavLinkProps) {
-  const activeHref = usePathname();
+  const pathname = usePathname();
+  const activeHref = getPathComponent(pathname, 1);
+  const targetHref = getPathComponent(href, 1);
+
   return (
     <Link
       href={href}
       className={cn(
         "text-sm font-medium transition-colors hover:text-primary",
-        { "text-muted-foreground": href !== activeHref }
+        { "text-muted-foreground": targetHref !== activeHref }
       )}
     >
       {label}
     </Link>
   );
+};
+
+function getPathComponent(path: string, component: number) {
+  return path.split("/")[component];
 };

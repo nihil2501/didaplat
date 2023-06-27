@@ -12,13 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogIn, LogOut } from "lucide-react";
 import { getServerSession } from "@/lib/auth";
 import { LogoutButton, LoginButton } from "./AuthButtons";
-
-function getInitials(name: string) {
-  return name
-    .trim().split(/\s+/)
-    .map(word => word[0].toUpperCase())
-    .join('');
-};
+import { Session } from "next-auth";
 
 export default async function UserNav() {
   const session = await getServerSession();
@@ -32,9 +26,9 @@ export default async function UserNav() {
     );
   }
 
-  const name = session.user?.name ?? "";
-  const email = session.user?.email ?? "";
-  const image = session.user?.image ?? "";
+  const name = getUserProperty(session, "name");
+  const email = getUserProperty(session, "email");
+  const image = getUserProperty(session, "image");
   const fallback = getInitials(name);
 
   return (
@@ -66,4 +60,27 @@ export default async function UserNav() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+type UserProperties =
+  "name" | "email" | "image";
+
+function getUserProperty(
+  session: Session | null,
+  property: UserProperties
+) {
+  const user = session?.user;
+  if (!user) return "";
+
+  const value = user[property];
+  if (!value) return "";
+  
+  return value;
+};
+
+function getInitials(name: string) {
+  return name
+    .trim().split(/\s+/)
+    .map(w => w[0].toUpperCase())
+    .join('');
 };

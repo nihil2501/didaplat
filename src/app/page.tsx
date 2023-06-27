@@ -5,7 +5,7 @@ export default async function Home() {
   const session = await getServerSession();
 
   if (session) {
-    redirect("/progress");
+    redirect("/progress/series");
   } else {
     redirect("/explore");
   }
