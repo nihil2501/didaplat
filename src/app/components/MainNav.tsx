@@ -22,6 +22,7 @@ interface MainNavLinkProps {
 
 function MainNavLink(props: MainNavLinkProps) {
   return (
-    <Link {...props} className="text-sm font-medium transition-colors hover:text-primary" />
+    <Link {...props} className="text-sm font-medium transition-colors
+      hover:text-primary" />
   );
-}
+};
