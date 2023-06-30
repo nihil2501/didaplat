@@ -6,12 +6,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-
-export interface Course {
-  id: number;
-  title: string;
-  description: string;
-};
+import { Course } from "../data";
 
 interface CourseProgressCardsProps {
   courses: Course[];
@@ -43,7 +38,7 @@ function CourseProgressCard({
   course
 }: CourseProgressCardProps) {
   return (
-    <Link href={`/courses/${course.id}`}>
+    <Link href={`/progress/${course.id}`}>
       <BaseCourseProgressCard
         title={<>{course.title}</>}
         description={<>{course.description}</>}
