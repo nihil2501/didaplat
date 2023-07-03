@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "debug": "NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "build": "npm run db:migrate:prod && next build",
     "start": "next start",
     "lint": "next lint",
+    "db:migrate:dev": "npm run db:generate && NODE_ENV=development npm run db:run_migrations",
+    "db:migrate:prod": "npm run db:generate && npm run db:run_migrations",
+    "db:generate": "drizzle-kit generate:pg",
+    "db:run_migrations": "node ./drizzle/migrate.mjs",
     "db:check": "drizzle-kit check:pg",
-    "db:drop": "drizzle-kit drop",
-    "db:migrate": "drizzle-kit generate:pg && NODE_ENV=development node ./drizzle/migrate.mjs"
+    "db:drop": "drizzle-kit drop"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.0.3",
