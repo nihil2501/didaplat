@@ -12,6 +12,7 @@ try {
 
   let sql, packagePart;
   switch (env) {
+
     case "development":
       const { default: { Client } } = await import("pg");
       const clientConfig = { connectionString: process.env.POSTGRES_URL };
@@ -21,15 +22,18 @@ try {
 
       await sql.connect();
       break;
+
     case "production":
       ({ sql } = await import("@vercel/postgres"));
       packagePart = "vercel-postgres"
       break;
+
     case "test":
       // Don't forget to add a `break` if `throw` is removed.
       throw new Error(
         "Unimplemented test environment migration"
       );
+
     default:
       // Don't forget to add a `break` if `throw` is removed.
       throw new Error(
