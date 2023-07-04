@@ -11,3 +11,4 @@
   * https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#client-side-caching-of-rendered-server-components
   * https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#conditions-for-soft-navigation
   * https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic-rendering#dynamic-functions
+* consider how we keep `pg` in sync with `@vercel/postgres` which ultimately emulates it.
