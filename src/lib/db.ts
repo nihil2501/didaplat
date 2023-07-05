@@ -56,7 +56,9 @@ async function buildDb({ migrate, drizzle, sql }: any) {
         console.error("❌ Database migration failed");
         throw error;
       } finally {
+        console.log("starting await sql.end()");
         await sql.end();
+        console.log("finishing await sql.end()");
       }
     };
 
