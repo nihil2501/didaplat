@@ -43,7 +43,7 @@ type VercelPgDatabase = PgDatabase<VercelPgParams>;
 async function buildDb(params: NodePgParams): Promise<NodePgDatabase>;
 async function buildDb(params: VercelPgParams): Promise<VercelPgDatabase>;
 async function buildDb({ migrate, drizzle, sql }: any) {
-  await sql.connect();
+  // await sql.connect();
   const db = drizzle(sql);
 
   const wrappedMigrate =
@@ -52,13 +52,12 @@ async function buildDb({ migrate, drizzle, sql }: any) {
         console.info("⌛ Running database migrations...");
         await migrate(db, config);
         console.info("✅ Database migration succeeded");
-      } catch(error) {
-        console.error("❌ Database migration failed");
+      } catch (error) {
+        console.error("❌ Database migration failed:");
+        console.error(error);
         throw error;
       } finally {
-        console.log("starting await sql.end()");
-        await sql.end();
-        console.log("finishing await sql.end()");
+        // await sql.end();
       }
     };
 
