@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCourse } from "../data";
+import CourseProgressDetails from "./components/CourseProgressDetails";
 
 interface CourseProgressProps {
   params: {
@@ -13,12 +14,5 @@ export default async function CourseProgress({
   const course = await getCourse(+id);
   if (!course) redirect("/progress");
 
-  return (
-    <>
-      <h1 className="text-2xl font-semibold leading-none tracking-tight">
-        {course.title}
-      </h1>
-      <p>{course.description}</p>
-    </>
-  )
+  return <CourseProgressDetails course={course} />
 };
