@@ -1,15 +1,15 @@
-import { drizzle as pgDrizzle } from "drizzle-orm/node-postgres";
-import { migrate as pgMigrate } from "drizzle-orm/node-postgres/migrator";
-import { Client as PgClient } from "pg";
+import { drizzle as nodePgDrizzle } from "drizzle-orm/node-postgres";
+import { migrate as nodePgMigrate } from "drizzle-orm/node-postgres/migrator";
+import { Client as NodePgClient } from "pg";
 
 import { drizzle as vercelDrizzle } from "drizzle-orm/vercel-postgres";
 import { migrate as vercelMigrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql as vercelSql } from "@vercel/postgres";
 
 type NodePgParams = {
-  migrate: typeof pgMigrate;
-  drizzle: typeof pgDrizzle;
-  sql: PgClient;
+  migrate: typeof nodePgMigrate;
+  drizzle: typeof nodePgDrizzle;
+  sql: NodePgClient;
 };
 
 type VercelPgParams = {
@@ -34,18 +34,26 @@ type Database = NodePgDatabase | VercelPgDatabase;
 async function init(params: NodePgParams): Promise<NodePgDatabase>;
 async function init(params: VercelPgParams): Promise<VercelPgDatabase>;
 async function init({ migrate, drizzle, sql }: any) {
-  const db = drizzle(sql);
   await sql.connect();
+  const db = drizzle(sql);
 
-  return {
-    db: db,
-    async migrate(config: MigrationConfig<Params>) {
+  const wrappedMigrate =
+    async (config: MigrationConfig<Params>) => {
       try {
+        console.info("⌛ Running database migrations...");
         await migrate(db, config);
+        console.info("✅ Database migration succeeded");
+      } catch(error) {
+        console.error("❌ Database migration failed");
+        throw error;
       } finally {
         await sql.end();
       }
-    },
+    };
+
+  return {
+    migrate: wrappedMigrate,
+    db: db,
   };
 };
 
@@ -53,11 +61,11 @@ function initByEnv() {
   switch (process.env.NODE_ENV) {
     case "development":
       const config = { connectionString: process.env.POSTGRES_URL };
-      const pgSql = new PgClient(config);
+      const nodePgSql = new NodePgClient(config);
       return init({
-        migrate: pgMigrate,
-        drizzle: pgDrizzle,
-        sql: pgSql,
+        migrate: nodePgMigrate,
+        drizzle: nodePgDrizzle,
+        sql: nodePgSql,
       });
     case "production":
       return init({
