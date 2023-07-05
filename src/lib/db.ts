@@ -1,3 +1,12 @@
+import { loadEnvConfig } from "@next/env";
+const dev = process.env.NODE_ENV == "development"
+loadEnvConfig(".", dev);
+if (!process.env.POSTGRES_URL) {
+  throw new Error(
+    "POSTGRES_URL environment variable is not defined"
+  );
+}
+
 import { drizzle as nodePgDrizzle } from "drizzle-orm/node-postgres";
 import { migrate as nodePgMigrate } from "drizzle-orm/node-postgres/migrator";
 import { Client as NodePgClient } from "pg";
@@ -5,6 +14,7 @@ import { Client as NodePgClient } from "pg";
 import { drizzle as vercelDrizzle } from "drizzle-orm/vercel-postgres";
 import { migrate as vercelMigrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql as vercelSql } from "@vercel/postgres";
+import { memoize } from "./utils";
 
 type NodePgParams = {
   migrate: typeof nodePgMigrate;
@@ -27,13 +37,12 @@ type PgDatabase<T extends Params> = {
 
 type NodePgDatabase = PgDatabase<NodePgParams>;
 type VercelPgDatabase = PgDatabase<VercelPgParams>;
-type Database = NodePgDatabase | VercelPgDatabase;
 
 // Unclear type situation here.
 // function setup<T extends Params>({ migrate, drizzle, sql }: T) {
-async function init(params: NodePgParams): Promise<NodePgDatabase>;
-async function init(params: VercelPgParams): Promise<VercelPgDatabase>;
-async function init({ migrate, drizzle, sql }: any) {
+async function buildDb(params: NodePgParams): Promise<NodePgDatabase>;
+async function buildDb(params: VercelPgParams): Promise<VercelPgDatabase>;
+async function buildDb({ migrate, drizzle, sql }: any) {
   await sql.connect();
   const db = drizzle(sql);
 
@@ -57,18 +66,18 @@ async function init({ migrate, drizzle, sql }: any) {
   };
 };
 
-function initByEnv() {
+function buildDbByEnv() {
   switch (process.env.NODE_ENV) {
     case "development":
       const config = { connectionString: process.env.POSTGRES_URL };
       const nodePgSql = new NodePgClient(config);
-      return init({
+      return buildDb({
         migrate: nodePgMigrate,
         drizzle: nodePgDrizzle,
         sql: nodePgSql,
       });
     case "production":
-      return init({
+      return buildDb({
         migrate: vercelMigrate,
         drizzle: vercelDrizzle,
         sql: vercelSql,
@@ -84,12 +93,4 @@ function initByEnv() {
   }
 };
 
-let memo: Database;
-function memoize(fn: () => Promise<Database>) {
-  return async () => {
-    if (!memo) memo = await fn();
-    return memo;
-  };
-};
-
-export const initDb = memoize(initByEnv);
+export const getDb = memoize(buildDbByEnv, {});

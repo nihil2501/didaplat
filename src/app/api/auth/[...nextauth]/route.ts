@@ -1,2 +1,3 @@
-import { authHandler } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
+const { authHandler } = await getAuth();
 export { authHandler as GET, authHandler as POST };
