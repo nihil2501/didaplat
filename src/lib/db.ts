@@ -1,5 +1,5 @@
 import { loadEnvConfig } from "@next/env";
-const dev = process.env.NODE_ENV == "development"
+const dev = process.env.NODE_ENV === "development";
 loadEnvConfig(".", dev);
 if (!process.env.POSTGRES_URL) {
   throw new Error(
@@ -16,17 +16,21 @@ import { migrate as vercelMigrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql as vercelSql } from "@vercel/postgres";
 import { memoize } from "./utils";
 
-type NodePgParams = {
+type PgParams<T> = T & {
+  manageConnection: boolean;
+};
+
+type NodePgParams = PgParams<{
   migrate: typeof nodePgMigrate;
   drizzle: typeof nodePgDrizzle;
   sql: NodePgClient;
-};
+}>;
 
-type VercelPgParams = {
+type VercelPgParams = PgParams<{
   migrate: typeof vercelMigrate;
   drizzle: typeof vercelDrizzle;
   sql: typeof vercelSql;
-};
+}>;
 
 type Params = NodePgParams | VercelPgParams;
 type MigrationConfig<T extends Params> = Parameters<T["migrate"]>[1];
@@ -42,9 +46,11 @@ type VercelPgDatabase = PgDatabase<VercelPgParams>;
 // function setup<T extends Params>({ migrate, drizzle, sql }: T) {
 async function buildDb(params: NodePgParams): Promise<NodePgDatabase>;
 async function buildDb(params: VercelPgParams): Promise<VercelPgDatabase>;
-async function buildDb({ migrate, drizzle, sql }: any) {
-  // await sql.connect();
+async function buildDb({ migrate, drizzle, sql, manageConnection }: any) {
   const db = drizzle(sql);
+  if (manageConnection) {
+    await sql.connect()
+  };
 
   const wrappedMigrate =
     async (config: MigrationConfig<Params>) => {
@@ -57,7 +63,9 @@ async function buildDb({ migrate, drizzle, sql }: any) {
         console.error(error);
         throw error;
       } finally {
-        // await sql.end();
+        if (manageConnection) {
+          await sql.end();
+        }
       }
     };
 
@@ -73,12 +81,14 @@ function buildDbByEnv() {
       const config = { connectionString: process.env.POSTGRES_URL };
       const nodePgSql = new NodePgClient(config);
       return buildDb({
+        manageConnection: true,
         migrate: nodePgMigrate,
         drizzle: nodePgDrizzle,
         sql: nodePgSql,
       });
     case "production":
       return buildDb({
+        manageConnection: false,
         migrate: vercelMigrate,
         drizzle: vercelDrizzle,
         sql: vercelSql,
