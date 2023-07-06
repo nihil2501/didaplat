@@ -8,7 +8,7 @@ interface MainNavProps {
 export default async function MainNav({ className }: MainNavProps) {
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-      <MainNavLink href="/explore">Explore</MainNavLink>
+      <MainNavLink href="/">Explore</MainNavLink>
       <MainNavLink href="/create">Create</MainNavLink>
       <MainNavLink href="/progress">Progress</MainNavLink>
     </nav>
