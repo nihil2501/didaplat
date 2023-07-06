@@ -2,7 +2,7 @@ type ProgressLayoutProps = {
   children: React.ReactNode;
 };
 
-export default async function ProgressLayout({
+export default function ProgressLayout({
 	children
 }: ProgressLayoutProps) {
   return (

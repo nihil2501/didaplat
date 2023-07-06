@@ -98,7 +98,7 @@ function buildDbByEnv() {
       });
     case "test":
       throw new Error(
-        "Unimplemented test environment migration"
+        "Unimplemented test DB"
       );
     default:
       throw new Error(
@@ -107,14 +107,4 @@ function buildDbByEnv() {
   }
 };
 
-function memoize<T>(
-  fn: () => Promise<T>,
-  memo: { value?: T },
-) {
-  return async () => {
-    if (!memo.value) memo.value = await fn();
-    return memo.value;
-  };
-};
-
-export const getDb = memoize(buildDbByEnv, {});
+export const getDb = buildDbByEnv();

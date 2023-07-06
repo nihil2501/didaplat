@@ -70,13 +70,7 @@ function getUserProperty(
   session: Session | null,
   property: keyof NonNullable<Session["user"]>
 ) {
-  const user = session?.user;
-  if (!user) return "";
-
-  const value = user[property];
-  if (!value) return "";
-  
-  return value;
+  return session?.user?.[property] ?? "";
 };
 
 function getInitials(name: string) {

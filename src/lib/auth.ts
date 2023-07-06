@@ -14,7 +14,7 @@ if (!env.GITHUB_ID || !env.GITHUB_SECRET) {
 }
 
 const authOptions = {
-  adapter: await DrizzleAdapter() as Adapter,
+  adapter: DrizzleAdapter as Adapter,
   session: { strategy: "jwt" as SessionStrategy },
   providers: [
     GithubProvider({

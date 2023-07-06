@@ -29,10 +29,11 @@ function AuthButton({ defaultText, componentName, onClick }: AuthButtonProps) {
     children = normalizeWithDefaultValue(children, defaultText);
     const child = assertSingleChild(children)(componentName);
 
-    const wrappedOnClick: React.MouseEventHandler = async function(event) {
-      await safeExecute((child as any).props.onClick)(event);
-      return onClick(event);
-    };
+    const wrappedOnClick: React.MouseEventHandler =
+      async function(event) {
+        await safeExecute((child as any).props.onClick)(event);
+        return onClick(event);
+      };
 
     const childProps = { ...props, onClick: wrappedOnClick };
     const element = React.cloneElement(

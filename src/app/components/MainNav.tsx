@@ -5,7 +5,7 @@ interface MainNavProps {
   className: string;
 }
 
-export default async function MainNav({ className }: MainNavProps) {
+export default function MainNav({ className }: MainNavProps) {
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       <MainNavLink href="/">Explore</MainNavLink>
