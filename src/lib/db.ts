@@ -7,7 +7,6 @@ import { Client as NodePgClient } from "pg";
 import { drizzle as vercelDrizzle } from "drizzle-orm/vercel-postgres";
 import { migrate as vercelMigrate } from "drizzle-orm/vercel-postgres/migrator";
 import { sql as vercelSql } from "@vercel/postgres";
-import { memoize } from "./utils";
 
 type PgParams<T> = T & {
   manageConnection: boolean;
@@ -106,6 +105,16 @@ function buildDbByEnv() {
         `Unknown environment: ${env.NODE_ENV}`
       );
   }
+};
+
+function memoize<T>(
+  fn: () => Promise<T>,
+  memo: { value?: T },
+) {
+  return async () => {
+    if (!memo.value) memo.value = await fn();
+    return memo.value;
+  };
 };
 
 export const getDb = memoize(buildDbByEnv, {});

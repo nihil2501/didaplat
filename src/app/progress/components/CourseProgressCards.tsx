@@ -21,10 +21,12 @@ export default function CourseProgressCards({
     <div className="hidden items-start justify-center gap-6 rounded-lg md:grid
       lg:grid-cols-2 xl:grid-cols-3">
         {courses.map((course) => {
-          return <CardComponent
-            key={course.id}
-            course={course}
-          />
+          return (
+            <CardComponent
+              key={course.id}
+              course={course}
+            />
+          );
         })}
     </div>
   );
