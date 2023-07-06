@@ -9,6 +9,12 @@ import DrizzleAdapter from "./DrizzleAdapter";
 import { Adapter } from "next-auth/adapters";
 
 async function buildAuth() {
+  if (!env.GITHUB_ID || !env.GITHUB_SECRET) {
+    throw new Error(
+      "GITHUB_ID or GITHUB_SECRET environment variable is not defined"
+    );
+  }
+
   const strategy: SessionStrategy = "jwt";
   const adapter = await DrizzleAdapter();
   const authOptions = {

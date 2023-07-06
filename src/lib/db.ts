@@ -1,11 +1,4 @@
-import { loadEnvConfig } from "@next/env";
-const dev = process.env.NODE_ENV === "development";
-loadEnvConfig(".", dev);
-if (!process.env.POSTGRES_URL) {
-  throw new Error(
-    "POSTGRES_URL environment variable is not defined"
-  );
-}
+import { env } from "@/env.mjs";
 
 import { drizzle as nodePgDrizzle } from "drizzle-orm/node-postgres";
 import { migrate as nodePgMigrate } from "drizzle-orm/node-postgres/migrator";
@@ -76,9 +69,15 @@ async function buildDb({ migrate, drizzle, sql, manageConnection }: any) {
 };
 
 function buildDbByEnv() {
-  switch (process.env.NODE_ENV) {
+  if (!env.POSTGRES_URL) {
+    throw new Error(
+      "POSTGRES_URL environment variable is not defined"
+    );
+  }
+
+  switch (env.NODE_ENV) {
     case "development":
-      const config = { connectionString: process.env.POSTGRES_URL };
+      const config = { connectionString: env.POSTGRES_URL };
       const nodePgSql = new NodePgClient(config);
       return buildDb({
         manageConnection: true,
@@ -99,7 +98,7 @@ function buildDbByEnv() {
       );
     default:
       throw new Error(
-        `Unknown environment: ${process.env.NODE_ENV}`
+        `Unknown environment: ${env.NODE_ENV}`
       );
   }
 };

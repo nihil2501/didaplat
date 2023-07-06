@@ -1,3 +1,4 @@
+* authjs v5
 * consider auth strategy of rewrite in middleware
   * https://github.com/chronark/unkey/blob/main/apps/web/middleware.ts
   * https://nextjs.org/docs/app/api-reference/components/link#middleware
