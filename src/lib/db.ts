@@ -36,10 +36,15 @@ type NodePgDatabase = PgDatabase<NodePgParams>;
 type VercelPgDatabase = PgDatabase<VercelPgParams>;
 
 // Unclear type situation here.
-// function setup<T extends Params>({ migrate, drizzle, sql }: T) {
+// async function buildDb<T extends Params>(params: T): Promise<PgDatabase<T>>;
 async function buildDb(params: NodePgParams): Promise<NodePgDatabase>;
 async function buildDb(params: VercelPgParams): Promise<VercelPgDatabase>;
-async function buildDb({ migrate, drizzle, sql, manageConnection }: any) {
+async function buildDb({
+  manageConnection,
+  migrate,
+  drizzle,
+  sql,
+}: any) {
   const db = drizzle(sql);
   if (manageConnection) {
     await sql.connect()
