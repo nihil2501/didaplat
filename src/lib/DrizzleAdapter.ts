@@ -8,7 +8,7 @@ type UnusedMethods = "createSession" | "getSessionAndUser" | "updateSession" |
   "deleteSession" | "createVerificationToken" | "userVerificationToken";
 type SimpleAdapter = Omit<Adapter, UnusedMethods>;
 
-const { db } = await getDb;
+const { db } = await getDb();
 export default {
   createUser: async (data) => {
     return db
