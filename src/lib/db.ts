@@ -107,28 +107,5 @@ function buildDbByEnv() {
   }
 };
 
-// We don't have top-level await due to importing this during local script
-// execution: `tsx script.mts`
-//
-// This memoizes the result of synchronously invoking an async function while
-// the promise it makes is not in a rejected state. If a rejection does occur,
-// the next invocation will then memoize a new asynchronous attempt.
-//
-// This might be well-suited for DB connection, which is just an initialization
-// activity that could conceivably be retried a little until it works. I think
-// later operations against the DB (like querying) will exhibit typical behavior
-// like erroring if a connection can't be maintained (but I'm not certain things
-// work this way).
-function memoizeAsyncFn<T>(fn: () => Promise<T>) {
-  let memo: ReturnType<typeof fn> | undefined;
-  return () => {
-    memo ??= fn().catch((error) => {
-      memo = undefined;
-      throw error;
-    });
-
-    return memo;
-  };
-};
-
-export const getDb = memoizeAsyncFn(buildDbByEnv);
+const db = buildDbByEnv();
+export const getDb = () => db;
