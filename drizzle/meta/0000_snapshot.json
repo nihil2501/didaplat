@@ -1,15 +1,15 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "b022ecea-7653-4291-a4b1-232a67b48e16",
+  "id": "bbe4c187-4d78-44f6-83cd-e100f32da21c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "accounts": {
       "name": "accounts",
       "schema": "",
       "columns": {
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -26,8 +26,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "providerAccountId": {
-          "name": "providerAccountId",
+        "provider_account_id": {
+          "name": "provider_account_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -77,12 +77,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "accounts_userId_users_id_fk": {
-          "name": "accounts_userId_users_id_fk",
+        "accounts_user_id_users_id_fk": {
+          "name": "accounts_user_id_users_id_fk",
           "tableFrom": "accounts",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -92,14 +92,15 @@
         }
       },
       "compositePrimaryKeys": {
-        "accounts_provider_providerAccountId": {
-          "name": "accounts_provider_providerAccountId",
+        "accounts_provider_provider_account_id": {
+          "name": "accounts_provider_provider_account_id",
           "columns": [
             "provider",
-            "providerAccountId"
+            "provider_account_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "users": {
       "name": "users",
@@ -123,8 +124,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "emailVerified": {
-          "name": "emailVerified",
+        "email_verified": {
+          "name": "email_verified",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -138,7 +139,8 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {},
