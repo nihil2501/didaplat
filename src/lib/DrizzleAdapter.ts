@@ -81,7 +81,7 @@ export default {
           )
         )
         .innerJoin(users, eq(accounts.userId, users.id))
-        .then(res => res[0])
+        .then((res) => res[0])
 
     if (!dbAccount) return null
     return dbAccount.users

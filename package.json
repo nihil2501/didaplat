@@ -24,11 +24,11 @@
     "autoprefixer": "10.4.14",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "drizzle-orm": "^0.27.0",
+    "drizzle-orm": "^0.27.2",
     "eslint": "8.43.0",
-    "eslint-config-next": "^13.4.8",
+    "eslint-config-next": "^13.4.10",
     "lucide-react": "^0.246.0",
-    "next": "^13.4.8",
+    "next": "^13.4.10",
     "next-auth": "^4.22.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/pg": "8.6.6",
-    "drizzle-kit": "^0.19.2",
+    "drizzle-kit": "^0.19.8",
     "pg": "8.8",
     "typescript": "^5.1.6"
   }
