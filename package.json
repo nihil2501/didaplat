@@ -40,9 +40,9 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/pg": "8.10.2",
+    "@types/pg": "^8.6.5",
     "drizzle-kit": "^0.19.8",
-    "pg": "8.11",
+    "pg": "8.8.0",
     "typescript": "^5.1.6"
   }
 }
